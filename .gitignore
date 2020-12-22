@@ -1,0 +1,10 @@
+.terraform
+accesskeyrotation_validate/easy_install.py
+accesskeyrotation_validate/pip
+accesskeyrotation_validate/pip-9.0.1.dist-info
+accesskeyrotation_validate/pkg_resources
+accesskeyrotation_validate/__pycache__
+accesskeyrotation_validate/setuptools
+accesskeyrotation_validate/setuptools-28.8.0.dist-info
+accesskeyrotation_validate/wheel
+accesskeyrotation_validate/wheel-0.29.0.dist-info
