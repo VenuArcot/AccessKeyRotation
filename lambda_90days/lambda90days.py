@@ -1,8 +1,11 @@
 import gnupg
 import boto3
 import sys
+import json
+
 from botocore.exceptions import ClientError
 
+       
 def lambda_handler(event, context):
     try:
         gpg = gnupg.GPG('/usr/bin/gpg')
@@ -30,6 +33,14 @@ def lambda_handler(event, context):
             SecretId=user_name,
             SecretString=access_key_json
         )
-        return "email"
-    except:
-        return "error"
+        return json.dumps('{"result":"email"}')
+    
+    except Exception as e:
+        print(e)
+        return json.dumps('{"result":"error"}')
+
+if __name__ == "__main__":
+    print('In main method')
+    event = {"username": "user4accesskeyrotation"}
+    print(lambda_handler(event, None))
+ 
