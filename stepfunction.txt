@@ -1,0 +1,52 @@
+{
+  "Comment": "Access Key Rotation, 90-days flow.",
+  "StartAt": "90days-lambda",
+  "States": {
+    "90days-lambda": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:us-east-1:062019610129:function:accesskeyrotation_90days:$LATEST",
+        "Payload.$": "$"
+      },
+      "Next": "SendEmail?"
+    },
+    "SendEmail?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.Payload.result",
+          "StringEquals": "email",
+          "Next": "Email"
+        },
+        {
+          "Variable": "$.Payload.result",
+          "StringEquals": "error",
+          "Next": "Notify"
+        }
+      ]
+    },
+    "Notify": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "Message": {
+          "Input.$": "$"
+        },
+        "TopicArn": "arn:aws:sns:us-east-1:062019610129:Accesskey-rotation-failure"
+      },
+      "End": true
+    },
+    "Email": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:us-east-1:062019610129:function:accesskeyrotation_email:$LATEST",
+        "Payload": {
+          "Category": "90days"
+        }
+      },
+      "End": true
+    }
+  }
+}

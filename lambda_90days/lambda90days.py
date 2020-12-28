@@ -33,14 +33,8 @@ def lambda_handler(event, context):
             SecretId=user_name,
             SecretString=access_key_json
         )
-        return json.dumps('{"result":"email"}')
+        return {"result":"email"}
     
     except Exception as e:
-        print(e)
-        return json.dumps('{"result":"error"}')
+        return {"result":"error", "errormsg":str(e)}
 
-if __name__ == "__main__":
-    print('In main method')
-    event = {"username": "user4accesskeyrotation"}
-    print(lambda_handler(event, None))
- 
